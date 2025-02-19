@@ -1,21 +1,24 @@
 import { useState } from "react"
 import React from 'react'
-import { show } from '../services/fruitService';
+import { show } from '../../../services/fruitService';
 import FruitDetail from "./FruitDetail/FruitDetail";
+import { Navigate, useNavigate } from "react-router";
 
 function FruitSearch() {
 
     const [fruit,setFruit] = useState('')
     const [fruitData, setFruitData]= useState('')
+    const navigate =useNavigate();
     const handleSubmit = async (e) => {
         // console.log('type a fruit name')
         e.preventDefault();
         if(!fruit.trim()) return;
         try{
             const data = await show(fruit);
-            setFruitData(data)
+            // setFruitData(data)
+            Navigate("/", { state: {fruitData:data } })
         } catch (error){
-console.error("Failed to fetch Fruit data:", error)
+console.error("Failed to fetch Fruit data:", error);
         }
 setFruit('')
     }
@@ -36,6 +39,7 @@ console.log(fruitData,"data from search")
 
         </form>
        </section>
+       <h1>Fruit List</h1>
        <FruitDetail fruit={fruitData} />
 
         </div>

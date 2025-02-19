@@ -1,19 +1,17 @@
 
-import { useState, useEffect } from 'react'
-import "/src/components/Fruits/Fruits.css";
+import React, { useState, useEffect } from 'react'
+import "./Fruits.css"
 import FruitForm from './FruitForm/FruitForm';
-import { getAllFruits } from '../services/fruitService';
-import FruitList from "/src/components/FruitList/FruitList";
-import FruitSearch from '../FruitSearch/FruitSearch';
-
-
+import FruitList from './FruitList/FruitList';
+import { getAllFruits } from '../../services/fruitService';
+import { useLocation } from 'react-router-dom';
+import FruitDetail from './FruitSearch/FruitDetail/FruitDetail';
 function Fruits() {
 
     const [fruits, setFruits] = useState([])
+    const { state } = useLocation();
+    const fruitData = state?.fruitData;
     const [collectedFruits, setCollectedFruits] = useState([]);
-
-
-
     useEffect(() => {
         const fetchFruits = async () => {
             const allFruits = await getAllFruits()
@@ -24,15 +22,12 @@ function Fruits() {
 
     const handleAddFruit = (fruit) => {
         if (!fruit.inStock) {
-            console.log("This fruit is out of stock")
+            console.log("This fruit is out of stock!")
             return;
         }
         setCollectedFruits([...collectedFruits, fruit])
 
-
     }
-    console.log(collectedFruits, "collected Fruits")
-
 
     const handleRemoveFruit = (fruit) => {
         setCollectedFruits(collectedFruits.filter(f => f.id !== fruit.id))
@@ -51,12 +46,19 @@ function Fruits() {
 
     return (
         <>
+            {
+                fruitData && (
+                    <>
+                        <h2>Searched Fruit Detail</h2>
+                        <FruitDetail fruit={fruitData} />
+                    </>
+                )
+            }
 
-            <FruitSearch fruits={fruits}/>
+            <h1>Fruit List</h1>
             <FruitList fruits={fruits} />
-            < FruitForm addFruit={addFruit} />
-
-
+            {/* add Form Fuit */}
+            <FruitForm addFruit={addFruit} />
             <div>
                 <h1>Fruit Inventory</h1>
                 <div>
@@ -67,27 +69,25 @@ function Fruits() {
                                 <li key={fruit.id}>
                                     <span>{fruit.name} {fruit.emoji}</span>
                                     {fruit.inStock && (
-                                        <button onClick={() => handleAddFruit(fruit)}>Add to collection</button>
+                                        <button onClick={() => handleAddFruit(fruit)}>Add to Collection</button>
                                     )}
-
                                 </li>
                             ))
                         }
                     </ul>
                 </div>
                 <div>
-                    <h3>Your Collection:</h3>
+                    <h3>Your Collection: </h3>
                     <ul>
-
                         {
                             collectedFruits.map(fruit => (
                                 <li key={fruit.id}>
                                     <span>{fruit.name} {fruit.emoji}</span>
-                                    <button onClick={() => handleRemoveFruit(fruit)}>Remove</button>
-
+                                    <button onClick={() => handleRemoveFruit(fruit)}>Remove from Collection</button>
                                 </li>
                             ))
                         }
+
                     </ul>
                 </div>
             </div>
@@ -95,4 +95,4 @@ function Fruits() {
     )
 }
 
-export default Fruits;
+export default Fruits
