@@ -2,13 +2,13 @@ import { useState } from "react"
 import React from 'react'
 import { show } from '../../../services/fruitService';
 import FruitDetail from "./FruitDetail/FruitDetail";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function FruitSearch() {
 
     const [fruit,setFruit] = useState('')
     const [fruitData, setFruitData]= useState('')
-    const navigate =useNavigate();
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         // console.log('type a fruit name')
         e.preventDefault();
@@ -16,7 +16,7 @@ function FruitSearch() {
         try{
             const data = await show(fruit);
             // setFruitData(data)
-            Navigate("/", { state: {fruitData:data } })
+            navigate("/", { state: {fruitData:data } })
         } catch (error){
 console.error("Failed to fetch Fruit data:", error);
         }
