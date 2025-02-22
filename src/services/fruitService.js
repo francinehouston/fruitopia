@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5005/fruits"
+const BASE_URL = "http://localhost:5005/fruits-api"
 
 export const getAllFruits = async () => {
     try {

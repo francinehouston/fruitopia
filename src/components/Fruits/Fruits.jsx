@@ -6,6 +6,8 @@ import FruitList from './FruitList/FruitList';
 import { getAllFruits } from '../../services/fruitService';
 import { useLocation } from 'react-router-dom';
 import FruitDetail from './FruitSearch/FruitDetail/FruitDetail';
+
+
 function Fruits() {
 
     const [fruits, setFruits] = useState([])
